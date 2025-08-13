@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -41,6 +41,7 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>;
 
 const SigUpForm = () => {
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,7 +77,7 @@ const SigUpForm = () => {
 
   return (
     <>
-      <Card>
+      <Card className="w-full">
         <CardHeader>
           <CardTitle>Criar Conta</CardTitle>
           <CardDescription>Crie sua conta para continuar.</CardDescription>
