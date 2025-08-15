@@ -24,8 +24,6 @@ const CategorySelector = ({ categories }: CategorySelectorProps) => {
       </div>
     </div>
   );
-
-  return <div className="ronded-3xl gb-[F4FFF] p-6"></div>;
 };
 
 export default CategorySelector;
