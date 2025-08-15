@@ -1,3 +1,4 @@
+"use client";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -7,7 +8,7 @@ const QuantitySelector = () => {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-5">
       <h3 className="font-medium">Quantidade:</h3>
       <div className="flex w-[100px] items-center justify-between rounded-lg border">
         <Button

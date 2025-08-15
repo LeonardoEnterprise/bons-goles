@@ -43,3 +43,12 @@ npx drizzle-kit push
 Gerar migrations:
 npx drizzle-kit generate
 }
+
+{
+implementar:
+Tela de administrador
+Query param( variações / quantidade selecionada)
+"pra quando uma rota for deletada, varaição de produto, a getne não perder a rota."
+Implementar um array de imagens p/variante
+
+}
