@@ -31,7 +31,7 @@ const CartItem = ({
           width={0}
           height={0}
           sizes="100vw"
-          className="h-[90px] w-[80px] rounded-lg object-cover"
+          className="h-[60px] w-[60px] rounded-lg object-cover"
         />
         <div className="flex flex-col gap-1">
           <p className="text-sm font-semibold">{productName}</p>
