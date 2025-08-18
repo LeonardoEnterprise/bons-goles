@@ -1,4 +1,5 @@
 import { Loader2, ShoppingBasketIcon } from "lucide-react";
+import Link from "next/link";
 
 import { formatCentsToBRL } from "@/helpers/money";
 import { useCart } from "@/hooks/queries/use-cart";
@@ -28,7 +29,7 @@ const Cart = () => {
       </SheetTrigger>
       <SheetContent className="w-full max-w-md">
         <SheetHeader>
-          <SheetTitle>Carrinho</SheetTitle>
+          <SheetTitle>Cestinha</SheetTitle>
         </SheetHeader>
         <div className="flex h-full flex-col px-5 pb-5">
           <div className="flex h-full max-h-full flex-col overflow-hidden">
@@ -87,8 +88,8 @@ const Cart = () => {
                 )}
               </div>
 
-              <Button className="rounded-full" disabled={isFetching}>
-                Finalizar Compra
+              <Button className="rounded-full" disabled={isFetching} asChild>
+                <Link href="/cart/identification">Finalizar Compra</Link>
               </Button>
             </div>
           )}
