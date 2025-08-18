@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { ShoppingBasketIcon } from "lucide-react";
+import { Loader2, ShoppingBasketIcon } from "lucide-react";
 
-import { getCart } from "@/actions/get-cart";
 import { formatCentsToBRL } from "@/helpers/money";
+import { useCart } from "@/hooks/queries/use-cart";
 
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
@@ -17,10 +16,9 @@ import {
 import CartItem from "./cart-item";
 
 const Cart = () => {
-  const { data: cart, isPending } = useQuery({
-    queryKey: ["cart"],
-    queryFn: () => getCart(),
-  });
+  const { data: cart, isPending, isFetching } = useCart();
+
+  const isCartUpdating = isPending || isFetching;
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -60,24 +58,38 @@ const Cart = () => {
 
               <div className="flex items-center justify-between text-xs font-medium">
                 <p>Subtotal</p>
-                <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
+                {isCartUpdating ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
+                )}
               </div>
 
               <Separator />
 
               <div className="flex items-center justify-between text-xs font-medium">
                 <p>Entrega</p>
-                <p>GRÁTIS</p>
+                {isCartUpdating ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <p>GRÁTIS</p>
+                )}
               </div>
 
               <Separator />
 
               <div className="flex items-center justify-between text-xs font-medium">
                 <p>Total</p>
-                <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
+                {isCartUpdating ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
+                )}
               </div>
 
-              <Button className="rounded-full">Finalizar Compra</Button>
+              <Button className="rounded-full" disabled={isFetching}>
+                Finalizar Compra
+              </Button>
             </div>
           )}
         </div>

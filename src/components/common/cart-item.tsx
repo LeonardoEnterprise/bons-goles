@@ -1,12 +1,13 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
+"use client";
+import { Loader2, MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
+import { useCallback, useRef } from "react";
 import { toast } from "sonner";
 
-import { addProductToCart } from "@/actions/add-cart-product";
-import { decreaseCartProductQuantity } from "@/actions/decrease-cart-product-quantity";
-import { removeProductFromCart } from "@/actions/remove-cart-products";
 import { formatCentsToBRL } from "@/helpers/money";
+import { useDecreaseCartProductQuantity } from "@/hooks/mutations/use-decrease-cart-product-quantity";
+import { useIncreaseCartProductQuantity } from "@/hooks/mutations/use-increase-cart-product-quantity";
+import { useRemoveProductFromCart } from "@/hooks/mutations/use-remove-product-from-cart";
 
 import { Button } from "../ui/button";
 
@@ -29,30 +30,26 @@ const CartItem = ({
   productVariantPriceInCents,
   quantity,
 }: CartItemProps) => {
-  const queryClient = useQueryClient();
+  const removeProductFromCartMutation = useRemoveProductFromCart(id);
 
-  const removeProductFromCartMutation = useMutation({
-    mutationKey: ["remove-to-cart"],
-    mutationFn: () => removeProductFromCart({ cartItemId: id }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-  });
-  const decreaseCartProductQuantityMutation = useMutation({
-    mutationKey: ["decrease-cart-product-quantity"],
-    mutationFn: () => decreaseCartProductQuantity({ cartItemId: id }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-  });
+  const decreaseCartProductQuantityMutation =
+    useDecreaseCartProductQuantity(id);
 
-  const increaseCartProductQuantityMutation = useMutation({
-    mutationKey: ["increase-cart-product-quantity"],
-    mutationFn: () => addProductToCart({ productVariantId, quantity: 1 }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-  });
+  const increaseCartProductQuantityMutation =
+    useIncreaseCartProductQuantity(productVariantId);
+
+  const isUpdating = decreaseCartProductQuantityMutation.isPending || increaseCartProductQuantityMutation.isPending;
+
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showDebouncedToast = useCallback((message: string) => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    toastTimeoutRef.current = setTimeout(() => {
+      toast.success(message);
+    }, 500);
+  }, []);
 
   const handleDeleteClick = () => {
     removeProductFromCartMutation.mutate(undefined, {
@@ -67,24 +64,20 @@ const CartItem = ({
 
   const handleDecreaseQuantityClick = () => {
     decreaseCartProductQuantityMutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success("Quantidade do produto atualizada.");
-      },
       onError: () => {
         toast.error("Erro ao atualizar quantidade do produto.");
       },
     });
+    showDebouncedToast("Quantidade atualizada.");
   };
 
   const handleIncreaseQuantityClick = () => {
     increaseCartProductQuantityMutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success("Quantidade do produto atualizada.");
-      },
       onError: () => {
         toast.error("Erro ao atualizar quantidade do produto.");
       },
     });
+    showDebouncedToast("Quantidade atualizada.");
   };
 
   return (
@@ -107,14 +100,22 @@ const CartItem = ({
             <Button
               className="h-4 w-4"
               variant="ghost"
+              disabled={isUpdating}
               onClick={handleDecreaseQuantityClick}
             >
               <MinusIcon />
             </Button>
-            <p className="text-xs font-medium">{quantity}</p>
+            <div className="flex items-center justify-center w-8">
+              {isUpdating ? (
+                <Loader2 className="h-3 w-3 animate-spin" />
+              ) : (
+                <p className="text-xs font-medium">{quantity}</p>
+              )}
+            </div>
             <Button
               className="h-4 w-4"
               variant="ghost"
+              disabled={isUpdating}
               onClick={handleIncreaseQuantityClick}
             >
               <PlusIcon />
