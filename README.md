@@ -52,4 +52,11 @@ Query param( variações / quantidade selecionada)
 Implementar um array de imagens p/variante
 squeletom nos items do carrinho usando shadcn
 Implementar entregas via correio.
+
+Implementar tela de falha da transação da stripe
+
+responsividade desk-top
+
+menu com demais items
+
 }
