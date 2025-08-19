@@ -56,9 +56,10 @@ const CartSummary = ({
               <Image
                 src={product.imageUrl}
                 alt={product.name}
-                width={78}
-                height={78}
-                className="rounded-lg"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="h-[70px] w-[65px] rounded-lg object-cover"
               />
               <div className="flex flex-col gap-1">
                 <p className="truncate text-sm font-semibold">{product.name}</p>

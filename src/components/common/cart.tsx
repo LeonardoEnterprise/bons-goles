@@ -23,9 +23,16 @@ const Cart = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" className="">
-          <ShoppingBasketIcon className="" size={"icon"} />
-        </Button>
+        <div className="relative inline-block">
+          <Button variant="outline" className="">
+            <ShoppingBasketIcon className="" size={"icon"} />
+            {cart?.items.length ? (
+              <span className="bg-primary absolute -top-1 -right-1 rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
+                {cart?.items?.length}
+              </span>
+            ) : null}
+          </Button>
+        </div>
       </SheetTrigger>
       <SheetContent className="w-full max-w-md">
         <SheetHeader>

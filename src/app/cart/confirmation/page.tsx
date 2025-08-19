@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 
 import Footer from "@/components/common/footer";
 import { Header } from "@/components/common/header";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/db";
 import { auth } from "@/lib/auth";
@@ -45,9 +44,9 @@ const ConfirmationPage = async () => {
     redirect("/cart/identification");
   }
   return (
-    <div>
+    <>
       <Header />
-      <div className="space-y-4 px-5">
+      <div className="flex-1 space-y-4 px-5">
         <Card>
           <CardHeader>
             <CardTitle>Identificação</CardTitle>
@@ -74,10 +73,8 @@ const ConfirmationPage = async () => {
           }))}
         />
       </div>
-      <div className="mt-12">
-        <Footer />
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
