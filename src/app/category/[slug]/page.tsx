@@ -30,9 +30,9 @@ const CategoryPage = async ({ params }: CategoryPageProps) => {
     },
   });
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col antialiased">
       <Header />
-      <div className="space-y-6 px-5">
+      <div className="flex-grow space-y-6 px-5 pb-5">
         <h2 className="text-xl font-semibold">{category.name}</h2>
         <div className="full grid grid-cols-2 gap-4">
           {products.map((product) => (
