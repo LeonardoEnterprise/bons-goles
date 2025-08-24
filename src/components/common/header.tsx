@@ -47,6 +47,8 @@ export const Header = () => {
                       <Avatar>
                         <AvatarImage
                           src={session?.user?.image as string | undefined}
+                          alt={session?.user?.name as string | undefined}
+                          className="h-10 w-10 rounded-full"
                         />
                         <AvatarFallback>
                           {session?.user?.name?.split(" ")?.[0]?.[0]}
@@ -55,8 +57,10 @@ export const Header = () => {
                       </Avatar>
 
                       <div>
-                        <h3 className="font-semibold">{session?.user?.name}</h3>
-                        <span className="text-muted-foreground block text-xs">
+                        <h3 className="font-semibold">
+                          {session?.user?.name?.split(" ")[0]}
+                        </h3>
+                        <span className="text-muted-foreground block truncate text-xs">
                           {session?.user?.email}
                         </span>
                       </div>
