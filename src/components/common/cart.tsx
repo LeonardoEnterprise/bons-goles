@@ -1,6 +1,7 @@
 import { Loader2, ShoppingBasketIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { forwardRef } from "react";
 
 import {
   DialogDescription,
@@ -22,7 +23,7 @@ import {
 } from "../ui/sheet";
 import CartItem from "./cart-item";
 
-const Cart = () => {
+const Cart = forwardRef<HTMLButtonElement>((props, ref) => {
   const { data: cart, isPending, isFetching } = useCart();
 
   const isCartUpdating = isPending || isFetching;
@@ -30,7 +31,7 @@ const Cart = () => {
     <Sheet>
       <SheetTrigger asChild>
         <div className="relative inline-block">
-          <Button variant="outline" className="">
+          <Button ref={ref} variant="outline" className="">
             <ShoppingBasketIcon className="" size={"icon"} />
             {cart?.items.length ? (
               <span className="bg-primary absolute -top-1 -right-1 rounded-full px-1.5 py-0.5 text-xs font-bold text-white">
@@ -140,6 +141,8 @@ const Cart = () => {
       </SheetContent>
     </Sheet>
   );
-};
+});
+
+Cart.displayName = "Cart";
 
 export default Cart;
